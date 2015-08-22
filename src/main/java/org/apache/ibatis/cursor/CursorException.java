@@ -13,24 +13,24 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package org.apache.ibatis.executor.resultset;
+package org.apache.ibatis.cursor;
 
-import org.apache.ibatis.cursor.Cursor;
-
-import java.sql.CallableStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.List;
+import org.apache.ibatis.exceptions.PersistenceException;
 
 /**
- * @author Clinton Begin
+ * @author Guillaume Darmont / guillaume@dropinocean.com
  */
-public interface ResultSetHandler {
+public class CursorException extends PersistenceException {
 
-  <E> List<E> handleResultSets(Statement stmt) throws SQLException;
+    public CursorException(String message) {
+        super(message);
+    }
 
-  <E> Cursor<E> handleCursorResultSets(Statement stmt) throws SQLException;
+    public CursorException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
-  void handleOutputParameters(CallableStatement cs) throws SQLException;
-
+    public CursorException(Throwable cause) {
+        super(cause);
+    }
 }
