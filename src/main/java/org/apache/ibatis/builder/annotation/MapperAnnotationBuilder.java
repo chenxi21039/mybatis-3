@@ -55,6 +55,7 @@ import org.apache.ibatis.annotations.SelectProvider;
 import org.apache.ibatis.annotations.TypeDiscriminator;
 import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.annotations.UpdateProvider;
+import org.apache.ibatis.annotations.Options.FlushCachePolicy;
 import org.apache.ibatis.binding.BindingException;
 import org.apache.ibatis.binding.MapperMethod.ParamMap;
 import org.apache.ibatis.builder.BuilderException;
@@ -292,7 +293,11 @@ public class MapperAnnotationBuilder {
       }
 
       if (options != null) {
-        flushCache = options.flushCache();
+        if (FlushCachePolicy.TRUE.equals(options.flushCache())) {
+          flushCache = true;
+        } else if (FlushCachePolicy.FALSE.equals(options.flushCache())) {
+          flushCache = false;
+        }
         useCache = options.useCache();
         fetchSize = options.fetchSize() > -1 || options.fetchSize() == Integer.MIN_VALUE ? options.fetchSize() : null; //issue #348
         timeout = options.timeout() > -1 ? options.timeout() : null;
@@ -331,7 +336,7 @@ public class MapperAnnotationBuilder {
           resultSetType,
           flushCache,
           useCache,
-          // TODO issue #577
+          // TODO gcode issue #577
           false,
           keyGenerator,
           keyProperty,
@@ -371,7 +376,7 @@ public class MapperAnnotationBuilder {
 
   private Class<?> getReturnType(Method method) {
     Class<?> returnType = method.getReturnType();
-    // issue #508
+    // gcode issue #508
     if (void.class.equals(returnType)) {
       ResultType rt = method.getAnnotation(ResultType.class);
       if (rt != null) {
@@ -386,17 +391,17 @@ public class MapperAnnotationBuilder {
           if (returnTypeParameter instanceof Class) {
             returnType = (Class<?>) returnTypeParameter;
           } else if (returnTypeParameter instanceof ParameterizedType) {
-            // (issue #443) actual type can be a also a parameterized type
+            // (gcode issue #443) actual type can be a also a parameterized type
             returnType = (Class<?>) ((ParameterizedType) returnTypeParameter).getRawType();
           } else if (returnTypeParameter instanceof GenericArrayType) {
             Class<?> componentType = (Class<?>) ((GenericArrayType) returnTypeParameter).getGenericComponentType();
-            // (issue #525) support List<byte[]>
+            // (gcode issue #525) support List<byte[]>
             returnType = Array.newInstance(componentType, 0).getClass();
           }
         }
       }
     } else if (method.isAnnotationPresent(MapKey.class) && Map.class.isAssignableFrom(returnType)) {
-      // (issue 504) Do not look into Maps if there is not MapKey annotation
+      // (gcode issue 504) Do not look into Maps if there is not MapKey annotation
       Type returnTypeParameter = method.getGenericReturnType();
       if (returnTypeParameter instanceof ParameterizedType) {
         Type[] actualTypeArguments = ((ParameterizedType) returnTypeParameter).getActualTypeArguments();
@@ -405,7 +410,7 @@ public class MapperAnnotationBuilder {
           if (returnTypeParameter instanceof Class) {
             returnType = (Class<?>) returnTypeParameter;
           } else if (returnTypeParameter instanceof ParameterizedType) {
-            // (issue 443) actual type can be a also a parameterized type
+            // (gcode issue 443) actual type can be a also a parameterized type
             returnType = (Class<?>) ((ParameterizedType) returnTypeParameter).getRawType();
           }
         }
