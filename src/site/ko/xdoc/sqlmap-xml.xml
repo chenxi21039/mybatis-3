@@ -145,12 +145,12 @@ ps.setInt(1,id);]]></source>
             </tr>
             <tr>
               <td><code>flushCache</code></td>
-              <td>이 값을 true 로 셋팅하면 구문이 호출될때마다 캐시가 지원질것이다(flush). 
+              <td>이 값을 true 로 셋팅하면 구문이 호출될때마다 로컬, 2nd 레벨 캐시가 지워질것이다(flush). 
 			  디폴트는 false이다.</td>
             </tr>
             <tr>
               <td><code>useCache</code></td>
-              <td>이 값을 true 로 셋팅하면 구문의 결과가 캐시될 것이다. 
+              <td>이 값을 true 로 셋팅하면 구문의 결과가 2nd 레벨 캐시에 캐시 될 것이다. 
 			  디폴트는 true이다.</td>
             </tr>
             <tr>
@@ -319,6 +319,18 @@ ps.setInt(1,id);]]></source>
     keyProperty="id">
   insert into Author (username,password,email,bio)
   values (#{username},#{password},#{email},#{bio})
+</insert>]]></source>
+
+        <p>
+          If your database also supports multi-row insert, you can pass a list or an array of <code>Author</code>s and retrieve the auto-generated keys.
+        </p>
+
+        <source><![CDATA[<insert id="insertAuthor" useGeneratedKeys="true"
+    keyProperty="id">
+  insert into Author (username, password, email, bio) values
+  <foreach item="item" collection="list" separator=",">
+    (#{item.username}, #{item.password}, #{item.email}, #{item.bio})
+  </foreach>
 </insert>]]></source>
 
         <p>마이바티스는 자동생성키 칼럼을 지원하지 않는 다른 데이터베이스를 위해 다른 방법 또한 제공한다.</p>
