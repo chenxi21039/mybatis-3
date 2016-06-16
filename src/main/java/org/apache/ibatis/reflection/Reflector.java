@@ -1,5 +1,5 @@
 /**
- *    Copyright 2009-2015 the original author or authors.
+ *    Copyright 2009-2016 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -38,11 +38,10 @@ import org.apache.ibatis.reflection.invoker.MethodInvoker;
 import org.apache.ibatis.reflection.invoker.SetFieldInvoker;
 import org.apache.ibatis.reflection.property.PropertyNamer;
 
-/*
+/**
  * This class represents a cached set of class definition information that
  * allows for easy mapping between property names and getter/setter methods.
- */
-/**
+ *
  * @author Clinton Begin
  */
 public class Reflector {
@@ -275,14 +274,16 @@ public class Reflector {
   private void addSetField(Field field) {
     if (isValidPropertyName(field.getName())) {
       setMethods.put(field.getName(), new SetFieldInvoker(field));
-      setTypes.put(field.getName(), field.getType());
+      Type fieldType = TypeParameterResolver.resolveFieldType(field, type);
+      setTypes.put(field.getName(), typeToClass(fieldType));
     }
   }
 
   private void addGetField(Field field) {
     if (isValidPropertyName(field.getName())) {
       getMethods.put(field.getName(), new GetFieldInvoker(field));
-      getTypes.put(field.getName(), field.getType());
+      Type fieldType = TypeParameterResolver.resolveFieldType(field, type);
+      getTypes.put(field.getName(), typeToClass(fieldType));
     }
   }
 

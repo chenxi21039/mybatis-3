@@ -1,5 +1,5 @@
 /**
- *    Copyright 2009-2015 the original author or authors.
+ *    Copyright 2009-2016 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -59,6 +59,7 @@ public class GenericTypeResolutionTest {
       criteria.setId(1);
       User result = mapper.getUser(criteria);
       assertEquals("User1", result.getName());
+      assertEquals(Integer.valueOf(12), result.getFld1());
     } finally {
       sqlSession.close();
     }
@@ -71,6 +72,7 @@ public class GenericTypeResolutionTest {
       Mapper mapper = sqlSession.getMapper(Mapper.class);
       User user = new User();
       user.setName("User2");
+      user.fld2 =56;
       mapper.insertUser(user);
       User result = mapper.getUserByName("User2");
       assertNotNull(result);

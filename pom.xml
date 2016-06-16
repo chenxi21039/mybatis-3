@@ -1,18 +1,20 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright 2009-2015 the original author or authors.
 
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
+       Copyright 2009-2016 the original author or authors.
 
-    http://www.apache.org/licenses/LICENSE-2.0
+       Licensed under the Apache License, Version 2.0 (the "License");
+       you may not use this file except in compliance with the License.
+       You may obtain a copy of the License at
 
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
+          http://www.apache.org/licenses/LICENSE-2.0
+
+       Unless required by applicable law or agreed to in writing, software
+       distributed under the License is distributed on an "AS IS" BASIS,
+       WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+       See the License for the specific language governing permissions and
+       limitations under the License.
+
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
@@ -20,22 +22,24 @@
   <parent>
     <groupId>org.mybatis</groupId>
     <artifactId>mybatis-parent</artifactId>
-    <version>26</version>
+    <version>27</version>
     <relativePath />
   </parent>
 
   <artifactId>mybatis</artifactId>
-  <version>3.4.0-SNAPSHOT</version>
+  <version>3.4.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>mybatis</name>
   <description>
-    The MyBatis data mapper framework makes it easier to use a relational database with object-oriented
+    The MyBatis SQL mapper framework makes it easier to use a relational database with object-oriented
     applications. MyBatis couples objects with stored procedures or SQL statements using a XML descriptor or
     annotations. Simplicity is the biggest advantage of the MyBatis data mapper over object relational mapping
     tools.
   </description>
-  <url>http://www.mybatis.org/core/</url>
+  <url>http://www.mybatis.org/mybatis-3</url>
+
+<inceptionYear>2009</inceptionYear>
 
   <contributors>
     <contributor>
@@ -138,15 +142,9 @@
     <dependency>
       <groupId>ognl</groupId>
       <artifactId>ognl</artifactId>
-      <version>3.1.2</version>
+      <version>3.1.7</version>
       <scope>compile</scope>
       <optional>true</optional>
-      <exclusions>
-         <exclusion>
-            <groupId>javassist</groupId>
-            <artifactId>javassist</artifactId>
-         </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.javassist</groupId>
@@ -158,13 +156,13 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
-      <version>1.7.16</version>
+      <version>1.7.21</version>
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-log4j12</artifactId>
-      <version>1.7.16</version>
+      <version>1.7.21</version>
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -189,7 +187,7 @@
     <dependency>
       <groupId>cglib</groupId>
       <artifactId>cglib</artifactId>
-      <version>3.2.1</version>
+      <version>3.2.2</version>
       <optional>true</optional>
     </dependency>
 
@@ -203,7 +201,7 @@
     <dependency>
       <groupId>org.hsqldb</groupId>
       <artifactId>hsqldb</artifactId>
-      <version>2.3.3</version>
+      <version>2.3.4</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -256,7 +254,11 @@
           <systemProperties>
             <property>
               <name>derby.stream.error.file</name>
-              <value>target/derby.log</value>
+              <value>${project.build.directory}/derby.log</value>
+            </property>
+            <property>
+              <name>derby.system.home</name>
+              <value>${project.build.directory}</value>
             </property>
           </systemProperties>
         </configuration>
