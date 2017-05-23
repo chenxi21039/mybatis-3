@@ -14,7 +14,11 @@
 --    limitations under the License.
 --
 
-CREATE MEMORY TABLE VALUETABLE(VALUECOLUMN VARCHAR(6), PARENTVALUECOLUMN VARCHAR(6));
-DELETE FROM VALUETABLE;
-INSERT INTO VALUETABLE (VALUECOLUMN, PARENTVALUECOLUMN) VALUES('child', 'parent');
-INSERT INTO VALUETABLE (VALUECOLUMN, PARENTVALUECOLUMN) VALUES('parent', NULL);
+drop table users if exists;
+
+create table users (
+  id int,
+  name varchar(20)
+);
+
+insert into users (id, name) values(1, 'User1');

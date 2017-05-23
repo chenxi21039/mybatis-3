@@ -1,5 +1,5 @@
 /**
- *    Copyright 2009-2015 the original author or authors.
+ *    Copyright 2009-2016 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -13,8 +13,36 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package org.apache.ibatis.submitted.automatic_lazy_loading;
 
-public interface ElementMapper {
-  Element selectElementById(String aValue);
+package org.apache.ibatis.submitted.empty_row;
+
+public class Child {
+  private Integer id;
+  private String name;
+
+  private Child grandchild;
+
+  public Integer getId() {
+    return id;
+  }
+
+  public void setId(Integer id) {
+    this.id = id;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public Child getGrandchild() {
+    return grandchild;
+  }
+
+  public void setGrandchild(Child grandchild) {
+    this.grandchild = grandchild;
+  }
 }

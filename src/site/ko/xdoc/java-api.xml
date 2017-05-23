@@ -409,15 +409,25 @@ try (SqlSession session = sqlSessionFactory.openSession()) {
         <td><code>Class</code></td>
         <td><code>&lt;cache&gt;</code></td>
         <td>명명공간을 위한 캐시 설정
-		사용가능한 속성들 : implementation, eviction, flushInterval, size 그리고 readWrite.
+		사용가능한 속성들 : implementation, eviction, flushInterval, size, readWrite, blocking 그리고 properties.
         </td>
+      </tr>
+      <tr>
+        <td><code>@Property</code></td>
+        <td>N/A</td>
+        <td><code>&lt;property&gt;</code></td>
+        <td>Specifies the property value or placeholder(can replace by configuration properties that defined at the <code>mybatis-config.xml</code>). Attributes: <code>name</code>, <code>value</code>. (Available on MyBatis 3.4.2+)</td>
       </tr>
       <tr>
         <td><code>@CacheNamespaceRef</code></td>
         <td><code>Class</code></td>
         <td><code>&lt;cacheRef&gt;</code></td>
-        <td>다른 명명공간의 캐시에 대한 참조
-		사용가능한 속성들 : value(명명공간의 이름).</td>
+        <td>
+          다른 명명공간의 캐시에 대한 참조 사용가능한 속성들 : <code>value</code>, <code>name</code>.
+          If you use this annotation, you should be specified either <code>value</code> or <code>name</code> attribute.
+          For the <code>value</code> attribute specify a java type indicating the namespace(the namespace name become a FQCN of specified java type),
+          and for the <code>name</code> attribute(this attribute is available since 3.4.2) specify a name indicating the namespace.
+        </td>
       </tr>
       <tr>
         <td><code>@ConstructorArgs</code></td>
@@ -428,7 +438,7 @@ try (SqlSession session = sqlSessionFactory.openSession()) {
       </tr>
       <tr>
         <td><code>@Arg</code></td>
-        <td><code>Method</code></td>
+        <td>N/A</td>
         <td>
           <ul>
             <li><code>&lt;arg&gt;</code></li>
@@ -450,7 +460,7 @@ try (SqlSession session = sqlSessionFactory.openSession()) {
       </tr>
       <tr>
         <td><code>@Case</code></td>
-        <td><code>Method</code></td>
+        <td>N/A</td>
         <td><code>&lt;case&gt;</code></td>
         <td>case 의 값과 매핑
 		사용가능한 속성들 : value, type, results. 
@@ -462,11 +472,11 @@ try (SqlSession session = sqlSessionFactory.openSession()) {
         <td><code>Method</code></td>
         <td><code>&lt;resultMap&gt;</code></td>
         <td>결과 칼럼이 프로퍼티나 필드에 매핑되는 방법에 대한 상세 설정을 포함하는 결과 매핑의 목록
-		사용가능한 속성들 : value(Result 애노테이션의 배열), id (name of the result mapping)</td>
+		사용가능한 속성들 : value(Result 애노테이션의 배열), id (결과매핑의 이름)</td>
       </tr>
       <tr>
         <td><code>@Result</code></td>
-        <td><code>Method</code></td>
+        <td>N/A</td>
         <td>
           <ul>
             <li><code>&lt;result&gt;</code></li>
@@ -482,7 +492,7 @@ try (SqlSession session = sqlSessionFactory.openSession()) {
       </tr>
       <tr>
         <td><code>@One</code></td>
-        <td><code>Method</code></td>
+        <td>N/A</td>
         <td><code>&lt;association&gt;</code></td>
         <td>복잡한 타입의 한개의 프로퍼티를 위한 매핑이다.
 		사용가능한 속성들 : select(매핑 구문의 이름, 예를들어 매퍼 메소드)
@@ -491,7 +501,7 @@ try (SqlSession session = sqlSessionFactory.openSession()) {
       </tr>
       <tr>
         <td><code>@Many</code></td>
-        <td><code>Method</code></td>
+        <td>N/A</td>
         <td><code>&lt;collection&gt;</code></td>
         <td>복잡한 타입의 collection 프로퍼티를 위한 매핑이다. 
 		사용가능한 속성들 : select(매핑 구문의 이름, 예를들어 매퍼 메소드)
@@ -571,7 +581,7 @@ try (SqlSession session = sqlSessionFactory.openSession()) {
         </td>
         <td>실행시 SQL 을 리턴할 클래스 과 메소드명을 명시하도록 해주는 대체수단의 애노테이션이다.
 		매핑된 구문을 실행할 때 마이바티스는 클래스의 인스턴스를 만들고 메소드를 실행한다. 
-		메소드는 파라미터 객체를 받을 수도 있다.(In MyBatis 3.4 or later, it's allow multiple parameters)
+		메소드는 파라미터 객체를 받을 수도 있다.(마이바티스 3.4이상에서는 복수 파라미터를 허용한다.)
 		사용가능한 속성들 : type, method. 
 		type 속성은 클래스.
 		method 속성은 메소드명이다.
@@ -644,7 +654,7 @@ try (SqlSession session = sqlSessionFactory.openSession()) {
   <source><![CDATA[@Flush
 List<BatchResult> flush();]]></source>
 
-  <p>These examples show how to name a ResultMap by specifying id attribute of @Results annotation.</p>
+  <p>다음 예제는 @Results애노테이션의 id속성을 명시해서 결과매핑을 명명하는 방법을 보여준다. </p>
   <source>@Results(id = "userResult", value = {
   @Result(property = "id", column = "uid", id = <strong>true</strong>),
   @Result(property = "firstName", column = "first_name"),
@@ -661,7 +671,7 @@ User getUserById(Integer id);
 @Select("select * from company where id = #{id}")
 Company getCompanyById(Integer id);</source>
 
-  <p>This example shows solo parameter using the Sql Provider annotation:</p>
+  <p>다음 예제는 Sql 프로바이더 애노테이션을 사용해서 파라미터 한개를 처리하는 방법을 보여준다.</p>
   <source><![CDATA[@SelectProvider(type = UserSqlBuilder.class, method = "buildGetUsersByName")
 List<User> getUsersByName(String name);
 
@@ -678,14 +688,14 @@ class UserSqlBuilder {
   }
 }]]></source>
 
-  <p>This example shows multiple parameters using the Sql Provider annotation:</p>
+  <p>다음 예제는 Sql 프로바이더 애노테이션을 사용해서 파라미터 여러개를 처리하는 방법을 보여준다.</p>
   <source><![CDATA[@SelectProvider(type = UserSqlBuilder.class, method = "buildGetUsersByName")
 List<User> getUsersByName(
     @Param("name") String name, @Param("orderByColumn") String orderByColumn);
 
 class UserSqlBuilder {
 
-  // If not use @Param, you should be define same arguments with mapper method
+  // @Param애노테이션을 사용하지 않으면 매퍼 메소드와 동일한 인자를 정의해야만 한다. 
   public String buildGetUsersByName(
       final String name, final String orderByColumn) {
     return new SQL(){{
@@ -696,7 +706,7 @@ class UserSqlBuilder {
     }}.toString();
   }
 
-  // If use @Param, you can define only arguments to be used
+  // @Param애노테이션을 사용한다면, 오직 사용할 인자만 정의할 수 있다. 
   public String buildGetUsersByName(@Param("orderByColumn") final String orderByColumn) {
     return new SQL(){{
       SELECT("*");
